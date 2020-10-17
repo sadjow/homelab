@@ -142,26 +142,15 @@ root user:
 The password is only used for the first time access.  Password authentication
 will be disabled later.  Connect to the freshly booted system using SSH.
 
-If you want to manage Pi using NixOps, there's some extra steps required.
+To enable crosss-compilation from an amd64 system add the following block to
+the the Pi's NixOS module:
 
-NixOps compiles all managed systems on the control PC where it runs. Then, it
-copies the binaries to the target systems.  This works well for i686 and amd64
-architectures but it doesn't work for aarch64.
+```nix
+nixpkgs.crossSystem.system = "aarch64-linux";
+```
 
-I tried to setup cross-compilation to aarch64, but it didn't work.
-
-The trick is to add the newly created Raspberry Pi as an aarch64 [remote build
-machine for Nix](https://nixos.org/nix/manual/#chap-distributed-builds).  This
-way the required packages will be built natively on the Pi itself (or other
-aarch64 remote build nodes, if you have any).  In practice, almost nothing is
-built from source, because the required derivations are pulled from the offical
-Nix binary cache.
-
-See the section `nix.buildMachines` in [x230.nix](x230.nix), which shows how to
-add the Pi to your control PC's remote build pool.  Enable some Raspberry Pi
-specific arguments in the [hardware specification](hardware/rp3.nix) and use
-NixOps as usual.
-
+Enable some Raspberry Pi specific arguments in the [hardware
+specification](hardware/rp3.nix) and use NixOps as usual.
 
 ## NodeMCU
 

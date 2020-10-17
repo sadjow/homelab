@@ -14,7 +14,7 @@ in
 
   deployment.targetHost = name;
   nix.maxJobs = lib.mkDefault 4;
-  nixpkgs.system = "aarch64-linux";
+  nixpkgs.crossSystem.system = "aarch64-linux";
 
   boot = {
     initrd = {
